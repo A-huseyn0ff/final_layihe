@@ -1,0 +1,62 @@
+.application{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    .container{
+        width: 70%;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+position: relative;
+overflow: hidden ;
+        margin: 150px 0;
+        background-color: #ffdd00;
+        border-radius: 15px;
+        .txt{
+            width: 50%;
+            height: 100%;
+            position: relative;
+            z-index: 2;
+            h2{
+                font-size: 42px;
+            }
+            p{
+                margin-top: 10px;
+            }
+            .app{
+                background-color: black;
+               height: 56px ;
+               width: 50% ;
+               display: flex;
+               align-items: center;
+               justify-content: space-around;
+               gap: 25px;
+               padding: 0 10px;
+               margin-top: 50px;
+               border-radius: 10px;
+              
+              .border{
+               border-right: 1px solid gray;
+               padding-right: 20px;
+              }
+            }
+        }
+        marquee {
+            white-space: nowrap;
+            position: absolute;
+            background-color: black;
+         left: 250px;
+         width: 100%;
+         
+            transform: rotate(-28deg);
+            color: white;
+            font-size: 80px;
+            z-index: 0;
+        }
+        .JAH{
+            position: relative;
+            z-index: 2;
+        }
+    }
+}

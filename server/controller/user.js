@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import User from '../schema/user.js';
-
+import {Event} from '../schema/events.js';
 // Controller for user login
 
 export const loginUser = async (req, res) => {
@@ -22,12 +22,14 @@ export const loginUser = async (req, res) => {
     const token = jwt.sign({ id: user._id, email: user.email }, 'secret_key', {
       expiresIn: '4h' // Token expires in 1 hour
     });
+   
     // res.status(200).json({ token });
     res.send(user)
   } catch (error) {
     res.status(400).send(error.message);
   }
 };
+
 // Controller for user registration
 export const registerUser = async (req, res) => {
   try {
@@ -36,6 +38,13 @@ export const registerUser = async (req, res) => {
     const user = new User({ name, surname, number, email, password: hashedPassword, role });
     await user.save();
     // res.status(201).send('User registered successfully');
+    const token = jwt.sign({ id: user._id, email: user.email }, 'secret_key', {
+      expiresIn: '4h' // Token expires in 4 hours
+    });
+    
+    // Store the token in localStorage
+    
+
     res.send(user)
   } catch (error) {
     res.status(500).send(error.message);
@@ -74,6 +83,26 @@ export const editUser = async (req, res) => {
     res.status(400).send(error.message);
   }
 };
+// Controller for deleting a user
+export const deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params; // Assuming userId is passed in the request parameters
+
+    // Find the user by userId
+    await User.findByIdAndDelete(id);
+
+    // If user not found
+    
+
+    // Delete the user
+    
+
+    res.status(200).send('User deleted successfully');
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
 // Controller for getting user by ID
 export const getUserById = async (req, res) => {
   try {
@@ -138,10 +167,15 @@ export const addToWishlist = async (req, res) => {
 
 // Controller function to add an event to the user's basket
 export const addToBasket = async (req, res) => {
-  const userId = req.params.id;
-  const eventId = req.body.eventId;
-
   try {
+    const userId = req.params.id;
+    const eventId = req.body._id;
+
+    // Check if userId and eventId are provided
+    if (!userId || !eventId) {
+      return res.status(400).json({ message: 'User ID and Event ID are required' });
+    }
+
     // Check if both user and event exist
     const user = await User.findById(userId);
     const event = await Event.findById(eventId);
@@ -160,3 +194,4 @@ export const addToBasket = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+

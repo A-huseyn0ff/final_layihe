@@ -68,7 +68,7 @@ const Popular = () => {
         {renderSlides()}
       </Swiper>
     </section>
-    <a href="https://azerbaijan.travel/?hl=en&utm_source=iticket.az&utm_medium=web&utm_campaign=top-banner" target="_blank" className='banner'><img src="https://cdn.iticket.az/images/banners/23147_ATB_ITicket.az_Banners_600x300_green_en.jpg" alt="Banner Image" class="lg"/> <img src="https://cdn.iticket.az/images/banners/23147_ATB_ITicket.az_Banners_1216x200_green_en.jpg" alt="Banner Image" class="hidden lg:block"/></a>
+    <a href="https://iticket.az/profile/gift-card?utm_source=iticket.az&amp;utm_medium=web&amp;utm_campaign=icard-March-2024" target="_blank" className='banner'><img src="https://cdn.iticket.az/images/banners/icard-banner-desktop-03-2023.gif" alt="Banner Image" class="hidden lg:block"/> </a>
     </>
   )
 }

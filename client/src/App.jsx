@@ -22,6 +22,7 @@ import { useState } from 'react';
 import PrivateRoute from './routes/privateRoute';
 import Turizm from './components/turizm/Turizm';
 import Admin from './pages/Admin/Admin';
+import Cart from './pages/Cart/Cart';
 function App() {
  
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -56,8 +57,9 @@ function App() {
         />
        
           {/* <Route path='/profile/:id' element={<Profile />} /> */}
-          {/* <Route path='/profile/orders' element={<Orders />} />
-          <Route path='/profile/adresses' element={<Adress />} /> */}
+          <Route path='/profile/:id/orders' element={<Cart />}  isAuthenticated={isAuthenticated}
+          userRole={userRole}/>
+          
         </Route>
         <Route path='/admin' element={<Admin />} />
       </Routes>

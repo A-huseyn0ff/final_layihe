@@ -61,6 +61,7 @@ useEffect(()=>{
       setIsLoggedIn(true);
       setIsRegisterOpen(false)
       setIsLoginOpen(false)
+    
     } catch (error) {
       console.error(error.response.data); // handle login error
       toast.error('Login failed');
@@ -76,6 +77,7 @@ useEffect(()=>{
       setIsLoggedIn(true);
       setIsRegisterOpen(false)
       setIsLoginOpen(false)
+     
     } catch (error) {
       console.error(error.response.data); // handle registration error
       toast.error('Registration failed');
@@ -95,21 +97,21 @@ useEffect(()=>{
 
         <ul className='navigation'>
              <li><Link to='/events'>Bütün tədbirlər</Link>
-             <svg viewBox='0 0 88 9' fill='#ffdd00' xmlns='http://www.w3.org/2000/svg' className={location.pathname === '/events' ? 'svg_active' : ''}>
-                 <path d='m0 5 88-5v4L0 9V5Z' fill='%23FD0'/>
+             <svg viewBox='0 0 88 9' fill='#ffdd00' xmlns='http://www.w3.org/2000/svg' >
+                 <path d='m0 5 88-5v4L0 9V5Z' fill='%23FD0' className={location.pathname === '/events' ? 'svg_active' : 'svg_nav'}/>
                </svg>
             
              </li>
              <li><Link to='/events/concerts'>Konsert</Link>
-             <svg viewBox='0 0 88 9' fill='#ffdd00' xmlns='http://www.w3.org/2000/svg'><path d='m0 5 88-5v4L0 9V5Z' fill='%23FD0' className={location.pathname === '/events/concerts' ? 'svg_active' : ''}/></svg></li>
+             <svg viewBox='0 0 88 9' fill='#ffdd00' xmlns='http://www.w3.org/2000/svg'><path d='m0 5 88-5v4L0 9V5Z' fill='%23FD0' className={location.pathname === '/events/concerts' ? 'svg_active' : 'svg_nav'}/></svg></li>
              <li><Link to='/events/theatre'>Tamaşa</Link>
-             <svg viewBox='0 0 88 9' fill='#ffdd00' xmlns='http://www.w3.org/2000/svg'><path d='m0 5 88-5v4L0 9V5Z' fill='%23FD0' className={location.pathname === '/events/theatre' ? 'svg_active' : ''}/></svg></li>
+             <svg viewBox='0 0 88 9' fill='#ffdd00' xmlns='http://www.w3.org/2000/svg'><path d='m0 5 88-5v4L0 9V5Z' fill='%23FD0' className={location.pathname === '/events/theatre' ? 'svg_active' : 'svg_nav'}/></svg></li>
              <li><Link to='/events/kids'>Uşaqlar</Link>
-             <svg viewBox='0 0 88 9' fill='#ffdd00' xmlns='http://www.w3.org/2000/svg'><path d='m0 5 88-5v4L0 9V5Z' fill='%23FD0' className={location.pathname === '/events/kids' ? 'svg_active' : ''}/></svg></li>
+             <svg viewBox='0 0 88 9' fill='#ffdd00' xmlns='http://www.w3.org/2000/svg'><path d='m0 5 88-5v4L0 9V5Z' fill='%23FD0' className={location.pathname === '/events/kids' ? 'svg_active' : 'svg_nav'}/></svg></li>
              <li><Link to='/events/hayal-kahvesi'>Hayal Kahvesi</Link>
-             <svg viewBox='0 0 88 9' fill='#ffdd00' xmlns='http://www.w3.org/2000/svg'><path d='m0 5 88-5v4L0 9V5Z' fill='%23FD0' className={location.pathname === '/events/hayal-kahvesi' ? 'svg_active' : ''}/></svg></li>
+             <svg viewBox='0 0 88 9' fill='#ffdd00' xmlns='http://www.w3.org/2000/svg'><path d='m0 5 88-5v4L0 9V5Z' fill='%23FD0' className={location.pathname === '/events/hayal-kahvesi' ? 'svg_active' : 'svg_nav'}/></svg></li>
              <li><Link to='/events/sport'>İdman</Link>
-             <svg viewBox='0 0 88 9' fill='#ffdd00' xmlns='http://www.w3.org/2000/svg'><path d='m0 5 88-5v4L0 9V5Z' fill='%23FD0' className={location.pathname === '/events/sport' ? 'svg_active' : ''}/></svg></li>
+             <svg viewBox='0 0 88 9' fill='#ffdd00' xmlns='http://www.w3.org/2000/svg'><path d='m0 5 88-5v4L0 9V5Z' fill='%23FD0' className={location.pathname === '/events/sport' ? 'svg_active' : 'svg_nav'}/></svg></li>
              <li style={{fontSize:'30px',cursor:'pointer'}} onClick={handleDropdownToggle}>...</li>
             {isDropdownOpen && (
               <ul className='dropdown'>
@@ -133,8 +135,14 @@ useEffect(()=>{
          <i className='fa-solid fa-magnifying-glass' onClick={handleSearchToggle}></i>
        
          </li>
-         <li> <i className='fa-solid fa-cart-shopping'></i>
-         </li>
+       
+         {profile && profile.inBasket && (
+  <li>
+    <Link to={`/profile/${profile._id}/orders`}><i className='fa-solid fa-cart-shopping'></i></Link>
+    {profile.inBasket.length}
+  </li>
+)}
+         
          <li className='user'><i className='fa-regular fa-user' onClick={openLoginModal}></i>
          {profile ? (
           <ul className={`${isLoggedIn ? 'profile' : 'dn'}`} key={profile._id}>
@@ -155,35 +163,6 @@ useEffect(()=>{
          </li>
         </ul>
       </div>
-      {/* <div className={isSearchOpen ? 'modal_overlay open' : 'modal_overlay close' }>
-           <div className='search_con'>
-           <div className='search'>
-           
-           <input
-              type="text"
-              placeholder="Axtar"
-             className='search'
-             value={searchInput}
-             onChange={handleSearchInputChange}
-            />
-             <i className="fa-solid fa-xmark register" onClick={() => { setIsSearchOpen(false) }}></i>
-           </div>
-           <div className='res' >
-           <h2>Tədbirlər</h2>
-           {category
-        .filter((item) =>
-          item.name.toLowerCase().includes(searchInput.toLowerCase())
-        )
-        .map((filteredItem) => (
-          <>
-         
-            <Link to={`/detail/${filteredItem._id}`} onClick={() => { setIsSearchOpen(false) }}>{filteredItem.name}</Link>
-            </>
-        ))
-        }
-        </div>
-           </div>
-          </div> */}
           <div className={isSearchOpen ? 'modal_overlay open' : 'modal_overlay close'}>
   <div className='search_con'>
     <div className='search'>
@@ -197,37 +176,21 @@ useEffect(()=>{
       <i className="fa-solid fa-xmark register" onClick={() => { setIsSearchOpen(false) }}></i>
     </div>
     <div className='res'>
-      <h2>Tədbirlər</h2>
-      {/* {category
-        .filter((item) =>
-          item.name.toLowerCase().includes(searchInput.toLowerCase())
-        )
-        .map((filteredItem) => (
-          <Link to={`/detail/${filteredItem._id}`} onClick={() => { setIsSearchOpen(false) }}>
-            {Array.from(filteredItem.name).map((letter, index) => (
-              <b key={index} className={searchInput.toLowerCase().includes(letter.toLowerCase()) ? 'highlight' : ''}>
-                {letter}
-              </b>
-             
-            ))}
-          </Link>
-        ))} */}
-       {category
-  .filter((item) =>
-    item.name && typeof item.name === 'string' && item.name.toLowerCase().includes(searchInput.toLowerCase())
-  )
-  .map((filteredItem) => (
-    <Link to={`/detail/${filteredItem._id}`} onClick={() => { setIsSearchOpen(false) }}>
-      {filteredItem.name && typeof filteredItem.name === 'string' && Array.from(filteredItem.name).map((letter, index) => (
-        <b key={index} className={searchInput.toLowerCase().includes(letter.toLowerCase()) ? 'highlight' : ''}>
-          {letter}
-        </b>
-      ))}
-    </Link>
-  ))}
-
-
-    </div>
+  <h2>Tədbirlər</h2>
+  {category
+    .filter((item) =>
+      item.name && typeof item.name === 'string' && item.name.toLowerCase().includes(searchInput.toLowerCase())
+    )
+    .map((filteredItem) => (
+      <Link to={`/detail/${filteredItem._id}`} key={filteredItem._id} onClick={() => { setIsSearchOpen(false) }}>
+        {filteredItem.name && typeof filteredItem.name === 'string' && Array.from(filteredItem.name).map((letter, index) => (
+          <b key={index} className={searchInput.toLowerCase().includes(letter.toLowerCase()) ? 'highlight' : ''}>
+            {letter}
+          </b>
+        ))}
+      </Link>
+    ))}
+</div>
   </div>
 </div>
 

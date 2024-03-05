@@ -29,6 +29,7 @@ const Header = () => {
   return (
     <>
       <header>
+        <span></span>
       <Swiper
         rewind={true}
         navigation={true}

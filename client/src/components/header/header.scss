@@ -1,3 +1,6 @@
+:root{
+    
+}
 header{
     display: flex;
     align-items: center;
@@ -7,13 +10,30 @@ header{
    
     width: 100%;
     height: 100%;
+    span{
+        --tw-bg-opacity: 1;
+    background-color: #fd0;
+    background-color: rgba(255, 221, 0, var(--tw-bg-opacity));
+    content: "";
+    height: 183px;
+    left: -98px;
+    position: absolute;
+    top: 742px;
+    transform: rotate(-26deg);
+    transform-origin: 0 0;
+    width: 112%;
+    z-index: 1;
+    }
     .mySwiper{
         width: 80%;
         border-radius: 20px;
         height: 794px;
         .slide{
+            width: 100%;
+            
             img{
-                width: 100%;
+                
+                width: 100% ;
                 height: 100%;
             }
            

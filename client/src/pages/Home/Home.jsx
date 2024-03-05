@@ -21,7 +21,7 @@ const Home = () => {
     <Theatre></Theatre>
     <Kids></Kids>
     <Application></Application>
-<Stripe></Stripe>
+{/* <Stripe></Stripe> */}
     </>
   )
 }

@@ -8,7 +8,7 @@ const All = () => {
     const uniquePlaceNames = [...new Set(category.map(item => item.aboutplace.placename))];
     const [selectedPlace, setSelectedPlace] = useState('');
     const [selectedDate, setSelectedDate] = useState('');
-    const [visibleItems, setVisibleItems] = useState(12); // Initial number of visible items
+    const [visibleItems, setVisibleItems] = useState(3); // Initial number of visible items
     const itemsPerPage = 6; // Number of items to show per page
 
     const handlePlaceChange = (event) => {

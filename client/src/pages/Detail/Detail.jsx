@@ -4,14 +4,15 @@ import "./detail.scss";
 import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { Link, animateScroll as scroll } from "react-scroll";
-
+import { toast, ToastContainer } from 'react-toastify';
 const Detail = () => {
   const [detail, setDetail] = useState([]);
   const [showAboutDetail, setShowAboutDetail] = useState(true);
   const [showLanguageAgeDetail, setShowLanguageAgeDetail] = useState(false);
   const { id } = useParams();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [similarItems, setSimilarItems] = useState([]);
-
+  
   useEffect(() => {
     const fetchDetail = async () => {
       try {
@@ -28,6 +29,8 @@ const Detail = () => {
 
     fetchDetail();
   }, [id]);
+
+ 
 
   useEffect(() => {
     const fetchSimilarItems = async () => {
@@ -81,7 +84,24 @@ const Detail = () => {
       placeSection.scrollIntoView({ behavior: "smooth" });
     }
   };
-
+  const addToBasket = async () => {
+    try {
+      // Check if user is logged in
+  
+  
+      // If user is logged in, proceed with adding to basket
+      const response = await axios.post(`http://localhost:8000/users/${profile._id}/basket`, {
+        eventId: detail._id
+      });
+      toast.success(`${detail.name} is added to your basket`);
+      console.log(response.data.message); // Log success message
+    } catch (error) {
+      toast.error(`${detail.name} is not added to your basket`);
+      console.error("Error adding event to basket:", error);
+      // Handle error, show toast message, etc.
+    }
+  };
+ 
   return (
     <>
       {detail && (
@@ -217,7 +237,7 @@ const Detail = () => {
    <p> {seat.seat}</p>
   </div>
 </div>
-<button>AS Standart {seat.price} ₼</button>
+<button onClick={addToBasket}>AS Standart {seat.price} ₼</button>
             <div className="arrow"></div>
           </div>
           <img

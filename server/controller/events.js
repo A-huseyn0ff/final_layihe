@@ -103,19 +103,75 @@ export const getEventById = async (req, res) => {
 };
 
 // Controller function to update an event by ID
+
 export const updateEventById = async (req, res) => {
     try {
-        const event = await Event.findById(req.params.id);
+        const eventId = req.params.id;
+        const event = await Event.findById(eventId);
+        
         if (!event) {
             return res.status(404).json({ message: 'Event not found' });
         }
-        Object.assign(event, req.body);
-        await event.save();
-        res.status(200).json(event);
+
+        // Handling file upload
+        upload.fields([
+            { name: "mainJPG" },
+            { name: "bgImage" },
+            { name: "detailImage" }
+        ])(req, res, async (err) => {
+            if (err) {
+                console.error(err);
+                return res.status(400).json({ message: err.message });
+            }
+
+            try {
+                // Check if any of the images need to be updated
+                const { mainJPG, bgImage, detailImage } = req.files;
+
+                if (mainJPG) {
+                    const MainimageResult = mainJPG[0];
+                    const MainimageResponse = await cloudinary.uploader.upload(MainimageResult.path, { folder: "images" });
+                    event.mainJPG = MainimageResponse.secure_url;
+                }
+
+                if (bgImage) {
+                    const BgimageResult = bgImage[0];
+                    const BgImageResponse = await cloudinary.uploader.upload(BgimageResult.path, { folder: "images" });
+                    event.bgImage = BgImageResponse.secure_url;
+                }
+
+                if (detailImage) {
+                    const DetailImageResult = detailImage[0];
+                    const DetailImageResponse = await cloudinary.uploader.upload(DetailImageResult.path, { folder: "images" });
+                    event.detailImage = DetailImageResponse.secure_url;
+                }
+                event.aboutplace = req.body.aboutplace;
+                event.name = req.body.name;
+                event.time = req.body.time;
+                event.about = req.body.about;
+                event.languageandage = req.body.languageandage;
+                event.ticketsRemain = req.body.ticketsRemain;
+                event.ticketsSold = req.body.ticketsSold;
+                event.isActive = req.body.isActive;
+                event.seats = req.body.seats;
+                // Update other event properties
+                Object.assign(event, req.body);
+
+                // Save the updated event
+                await event.save();
+
+                res.status(200).json(event);
+            } catch (error) {
+                console.error(error);
+                res.status(500).json({ message: "An error occurred while updating the event." });
+            }
+        });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.error(error);
+        res.status(500).json({ message: "An error occurred while processing the request." });
     }
 };
+
 
 // Controller function to delete an event by ID
 export const deleteEventById = async (req, res) => {

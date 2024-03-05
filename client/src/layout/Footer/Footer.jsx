@@ -48,8 +48,8 @@ const Footer = () => {
       <li>
       <Link to={'/page/about'}>Haqqımızda</Link>
 </li>
-      <li>Məkanlar
-</li>
+      {/* <li>Məkanlar
+</li> */}
       <li><Link to={'/page/point-of-sales'}>Biletlərin Satış Məntəqələri</Link>
 </li>
       <li>
